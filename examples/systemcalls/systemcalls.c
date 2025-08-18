@@ -76,7 +76,7 @@ bool do_exec(int count, ...)
         ret = execv(command[0],&(command[1]));
     }
     else{
-        wait(pid);
+        wait();
     }
 
     va_end(args);
@@ -128,7 +128,7 @@ bool do_exec_redirect(const char *outputfile, int count, ...)
             ret = execv(command[0],&(command[1]));
         default:
             close(fd);
-            wait(pid);
+            wait();
 
     }
 
