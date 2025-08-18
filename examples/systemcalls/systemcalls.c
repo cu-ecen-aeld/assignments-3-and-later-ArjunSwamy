@@ -1,7 +1,9 @@
 #include "systemcalls.h"
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <fcntl.h>
 
 /**
  * @param cmd the command to execute with system()
@@ -71,7 +73,7 @@ bool do_exec(int count, ...)
     }
     if(pid==0){
         //in child
-        ret = execv(command[0],*(command[1]));
+        ret = execv(command[0],&(command[1]));
     }
     else{
         wait(pid);
@@ -123,7 +125,7 @@ bool do_exec_redirect(const char *outputfile, int count, ...)
                  return -1;
                 }
             close(fd);
-            ret = execv(command[0],*(command[1]));
+            ret = execv(command[0],&(command[1]));
         default:
             close(fd);
             wait(pid);
