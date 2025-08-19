@@ -77,7 +77,7 @@ bool do_exec(int count, ...)
     }
     if(pid==0){
         //in child
-        ret = execv(command[0], command);
+        return execv(command[0], command);
     }
     else{
         wait(&ret);
@@ -133,7 +133,7 @@ bool do_exec_redirect(const char *outputfile, int count, ...)
                  return -1;
                 }
             close(fd);
-            ret = execv(command[0], command);
+            return execv(command[0], command);
         default:
             close(fd);
             wait(&ret);
