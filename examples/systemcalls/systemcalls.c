@@ -77,7 +77,7 @@ bool do_exec(int count, ...)
     }
     if(pid==0){
         //in child
-        ret = execv(command[0],&(command[1]));
+        ret = execv(command[0], command);
     }
     else{
         wait(NULL);
@@ -85,7 +85,11 @@ bool do_exec(int count, ...)
 
     va_end(args);
 
-    return ret;
+    if(ret == -1){
+        return false;
+    }
+
+    return WIFEXITED(ret);
 }
 
 /**
@@ -129,7 +133,7 @@ bool do_exec_redirect(const char *outputfile, int count, ...)
                  return -1;
                 }
             close(fd);
-            ret = execv(command[0],&(command[1]));
+            ret = execv(command[0], command);
         default:
             close(fd);
             wait(NULL);
@@ -138,5 +142,9 @@ bool do_exec_redirect(const char *outputfile, int count, ...)
 
     va_end(args);
 
-    return ret;
+    if(ret == -1){
+        return false;
+    }
+
+    return WIFEXITED(ret);
 }
