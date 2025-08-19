@@ -22,9 +22,13 @@ bool do_system(const char *cmd)
  *   or false() if it returned a failure
 */
     if(cmd == NULL){
-        return -1;
+        return false;
     }
-    return system(cmd);
+    int ret =  system(cmd); 
+    if(ret == -1){
+        return false;
+    }
+    return WIFEXITED(ret);
 }
 
 /**
