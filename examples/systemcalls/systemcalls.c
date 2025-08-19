@@ -73,12 +73,10 @@ bool do_exec(int count, ...)
         va_end(args);
         return false;
     }
-
-    pid_t pid;
-    int ret = 0;;
-    pid = fork();
+    va_end(args);
+    pid_t pid = fork();
     if(pid<0){
-        return -1;
+        return false;
     }
     if(pid==0){
         //in child
@@ -86,16 +84,18 @@ bool do_exec(int count, ...)
         exit(1);
     }
     else{
-        wait(&ret);
-    }
-
-    va_end(args);
-
-    if(ret == -1){
-        return false;
-    }
+        int ret = 0;
+        if(wait(&ret) == -1){
+            return false;
+        }
+        if(ret == -1){
+            return false;
+        }
 
     return WIFEXITED(ret);
+    }
+
+
 }
 
 /**
@@ -133,14 +133,14 @@ bool do_exec_redirect(const char *outputfile, int count, ...)
     int ret = 0;
     int fd = open(outputfile, O_WRONLY|O_TRUNC|O_CREAT, 0644);
     if (fd < 0)
-        return -1;
+        return false;
     pid_t pid;
     switch(pid = fork()){
         case -1: 
-            return -1;
+            return false;
         case 0: 
             if (dup2(fd, 1) < 0){
-                 return -1;
+                 return false;
                 }
             close(fd);
             execv(command[0], command);
