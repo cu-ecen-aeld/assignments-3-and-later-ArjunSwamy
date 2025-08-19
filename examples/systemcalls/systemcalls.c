@@ -72,7 +72,7 @@ bool do_exec(int count, ...)
 */
     if (command[0][0] != '/'){
         va_end(args);
-        printf(command[0]);
+        printf("%s",command[0]);
         return false;
     }
 
