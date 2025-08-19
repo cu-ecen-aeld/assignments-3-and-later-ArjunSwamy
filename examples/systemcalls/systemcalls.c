@@ -91,11 +91,11 @@ bool do_exec(int count, ...)
         if(wait(&ret) == -1){
             return false;
         }
-        if(ret == -1){
-            return false;
-        }
-
-    return WIFEXITED(ret);
+		if(WIFEXITED(status) && WEXITSTATUS(status) == 0){
+			return true;
+		}
+		else{
+			return false;
     }
 
 
