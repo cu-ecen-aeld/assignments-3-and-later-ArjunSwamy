@@ -80,7 +80,7 @@ bool do_exec(int count, ...)
         ret = execv(command[0], command);
     }
     else{
-        wait(NULL);
+        wait(&ret);
     }
 
     va_end(args);
@@ -136,7 +136,7 @@ bool do_exec_redirect(const char *outputfile, int count, ...)
             ret = execv(command[0], command);
         default:
             close(fd);
-            wait(NULL);
+            wait(&ret);
 
     }
 
