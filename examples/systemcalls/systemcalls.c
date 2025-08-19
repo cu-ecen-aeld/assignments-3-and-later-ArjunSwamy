@@ -70,6 +70,7 @@ bool do_exec(int count, ...)
  *
 */
     if (command[0][0] != '/'){
+        va_end(args);
         return false;
     }
 
@@ -81,7 +82,8 @@ bool do_exec(int count, ...)
     }
     if(pid==0){
         //in child
-        return execv(command[0], command);
+        execv(command[0], command);
+        return false;
     }
     else{
         wait(&ret);
@@ -125,6 +127,7 @@ bool do_exec_redirect(const char *outputfile, int count, ...)
  *
 */
     if (command[0][0] != '/'){
+        va_end(args);
         return false;
     }
     int ret = 0;
@@ -140,7 +143,8 @@ bool do_exec_redirect(const char *outputfile, int count, ...)
                  return -1;
                 }
             close(fd);
-            return execv(command[0], command);
+            execv(command[0], command);
+            return false;
         default:
             close(fd);
             wait(&ret);
