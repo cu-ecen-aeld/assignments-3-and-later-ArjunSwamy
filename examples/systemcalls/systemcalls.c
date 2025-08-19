@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <fcntl.h>
+#include <stdio.h>
 
 /**
  * @param cmd the command to execute with system()
@@ -71,8 +72,10 @@ bool do_exec(int count, ...)
 */
     if (command[0][0] != '/'){
         va_end(args);
+        printf(command[0][0]);
         return false;
     }
+
     va_end(args);
     pid_t pid = fork();
     if(pid<0){
