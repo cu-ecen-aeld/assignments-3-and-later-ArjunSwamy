@@ -96,7 +96,7 @@ bool do_exec(int count, ...)
 		}
 		else{
 			return false;
-    }
+        }
     }
 
 }
@@ -159,6 +159,11 @@ bool do_exec_redirect(const char *outputfile, int count, ...)
     if(ret == -1){
         return false;
     }
-
-    return WIFEXITED(ret);
+    
+    if(WIFEXITED(ret) && WEXITSTATUS(ret) == 0){
+        return true;
+    }
+    else{
+        return false;
+    }
 }
